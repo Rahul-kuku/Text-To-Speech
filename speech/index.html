@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Glowing Board</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="player-container">
+        <div id="textAnimation"></div> <!-- This will show the animated text -->
+        
+        <div class="glowing-board" id="board">
+          <div id="textContainer" contenteditable="true" placeholder="Type or paste your text here..."></div>
+            <button class="play-btn" id="playPauseBtn" onclick="togglePlayPause()">▶</button>
+            <input type="range" id="seekBar" min="0" value="0" step="1">
+            <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
+            <div class="speed-container">
+                <button class="speed-btn">Speed ▾</button>
+                <ul class="speed-dropdown">
+                    <li data-speed="0.5">0.5x</li>
+                    <li data-speed="0.75">0.75x</li>
+                    <li data-speed="1" class="selected">1x ✔</li>
+                    <li data-speed="1.5">1.5x</li>
+                    <li data-speed="2">2x</li> <!-- Added 2x speed -->
+                </ul>
+            </div>
+            
+            
+
+            
+        </div>
+
+        <div class="night-sky">
+            <div class="moon"></div>
+            <div class="stars"></div>
+            <div class="meteors"></div>
+        </div>
+
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

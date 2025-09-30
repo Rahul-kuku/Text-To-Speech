@@ -1,0 +1,535 @@
+body {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+}
+
+
+
+
+
+.player-container {
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+}
+
+.glowing-board {
+    width: 100%; /* Increase width */
+    height: 350px; /* Increase height */
+    max-width: 800px; /* Set a max width */
+    background: #222;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+    border: 2px solid rgba(0, 255, 255, 0.5);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.glowing-board:hover {
+    box-shadow: 0 0 35px rgba(0, 255, 255, 1);
+}
+
+/* Fullscreen mode smooth transition */
+.glowing-board:fullscreen {
+    animation: fullscreenAnim 0.3s ease-in-out forwards;
+    width: 100%;
+    height: 90vh;
+}
+
+/* Exit Fullscreen Animation */
+@keyframes fullscreenAnim {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.05);
+    }
+}
+
+/* Fullscreen Button - Hidden by default */
+.fullscreen-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+/* Show button when hovering over the board */
+.glowing-board:hover .fullscreen-btn {
+    opacity: 1;
+}
+
+/* Button click effect */
+.fullscreen-btn:active {
+    transform: scale(0.9);
+}
+
+
+.fullscreen-btn:hover {
+    /* Smooth hover effect */
+
+    background: rgba(0, 255, 255, 0.5);
+    transform: scale(1.1);
+
+}
+
+
+/* Text Input Inside the Board */
+#textInput {
+    width: 100%;
+    height: 90%;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    outline: none;
+    resize: none;  /* Prevent resizing */
+    overflow-y: auto; /* Enable vertical scrolling */
+    scrollbar-width: thin; /* Makes scrollbar smaller */
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent; /* Custom scrollbar color */
+}
+
+/* Custom scrollbar for Webkit browsers (Chrome, Edge, Safari) */
+#textInput::-webkit-scrollbar {
+    width: 6px;
+}
+
+#textInput::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+}
+
+#textInput::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Adjust text area in fullscreen mode */
+.glowing-board:fullscreen #textInput {
+    height: 95%;
+    font-size: 18px; /* Increase text size for better readability */
+    padding: 15px;
+}
+
+/* Play/Pause Button - Hidden by default */
+.play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 30px;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+/* Show button when hovering */
+.glowing-board:hover .play-btn {
+    opacity: 1;
+}
+
+/* Button click effect */
+.play-btn:active {
+    transform: translate(-50%, -50%) scale(0.9);
+}
+
+/* Ensure buttons are hidden by default in fullscreen */
+.glowing-board:fullscreen .play-btn,
+.glowing-board:fullscreen .fullscreen-btn {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Show buttons on hover even in fullscreen */
+.glowing-board:fullscreen:hover .play-btn,
+.glowing-board:fullscreen:hover .fullscreen-btn {
+    opacity: 1;
+}
+
+
+/* Editable text container */
+#textContainer {
+    width: 100%;
+    height: 90%;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    outline: none;
+    resize: none;
+    overflow-y: auto; /* Enable scrolling for long text */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+/* Placeholder Styling */
+#textContainer.placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}
+
+
+/* Highlight the currently spoken word and make it bigger */
+.highlight {
+    background: rgba(255, 255, 0, 0.7);
+    border-radius: 5px;
+    padding: 2px;
+    font-size: 1.2em; /* Make the highlighted word bigger */
+    font-weight: bold;
+    transition: font-size 0.2s ease-in-out; /* Smooth transition */
+}
+
+
+/* Hide buttons by default */
+.play-btn,
+.fullscreen-btn {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Show buttons only when hovering */
+.glowing-board:hover .play-btn,
+.glowing-board:hover .fullscreen-btn {
+    opacity: 1;
+}
+
+
+/* Seek Bar (Hidden by Default) */
+#seekBar {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    outline: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+/* Show Seek Bar when Hovering */
+.glowing-board:hover #seekBar {
+    opacity: 1;
+}
+
+/* Custom Styling for Seek Bar */
+#seekBar::-webkit-slider-thumb {
+    width: 10px;
+    height: 10px;
+    background: yellow;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
+/* Speed Button (Hidden by Default) */
+.speed-container {
+    position: absolute;
+    top: 5px;
+    right: 3px; /* Adjust position inside the board */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    
+}
+
+/* Show Speed Button when Hovering */
+.glowing-board:hover .speed-container {
+    opacity: 1;
+}
+
+/* Dropdown Menu */
+.speed-dropdown {
+    list-style: none;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    display: none;
+    position: absolute;
+    width: 70px;
+    top: 30px;
+    right: 0;
+}
+
+/* Show dropdown when button is clicked */
+.speed-container.active .speed-dropdown {
+    display: block;
+}
+
+/* Dropdown Items */
+.speed-dropdown li {
+    padding: 5px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+}
+
+.speed-dropdown li:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Selected Speed */
+.selected {
+    font-weight: bold;
+    color: yellow;
+}
+
+
+
+.speed-btn{
+    border-radius: 7px;
+    height: 25px;
+}
+
+
+
+#textAnimation {
+    position: absolute;
+    top: 70px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+    max-width: 90%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal; /* ✅ Allows text to break into multiple lines */
+    line-height: 1.4;
+    padding: 10px;
+    background: linear-gradient(45deg, #ff0000, #ff7300, #ffeb00, #47ff00, #00ffd5, #0055ff, #8000ff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* ✅ Make text size responsive on smaller screens */
+@media (max-width: 768px) {
+    #textAnimation {
+        font-size: 18px; /* Reduce font size for smaller screens */
+        top: 50px; /* Adjust position for mobile */
+    }
+}
+
+
+
+
+
+/* 🌌 Night Sky */
+.night-sky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+/* 🌙 Glowing Moon */
+.moon {
+    position: absolute;
+    top: 10%;
+    left: 85%;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at center, #ffffff, #bbbbbb);
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+}
+
+/* ✨ Stars Twinkling Effect */
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle linear infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
+/* 🌠 Meteors (Shooting Stars) */
+.meteor {
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background: linear-gradient(to bottom, white, transparent);
+    opacity: 0;
+    transform: rotate(45deg);
+    animation: meteor-fall linear infinite;
+}
+
+@keyframes meteor-fall {
+    0% {
+        transform: translateX(0) translateY(0) rotate(45deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-200px) translateY(200px) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+/* 🌌 Space Dust for Depth */
+.space-dust {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 1%, transparent 30%);
+    opacity: 0.1;
+    animation: dust-move 20s infinite linear;
+}
+
+@keyframes dust-move {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100vh); }
+}
+
+
+
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .player-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .glowing-board {
+        height: 250px;
+        font-size: 16px;
+        max-width: 90%;
+    }
+
+    #textContainer {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .play-btn {
+        font-size: 24px;
+        padding: 10px 15px;
+    }
+
+    .fullscreen-btn {
+        font-size: 16px;
+        padding: 6px 10px;
+    }
+
+    .speed-container {
+        top: 5px;
+        right: 5px;
+    }
+
+    .speed-dropdown {
+        width: 60px;
+        font-size: 12px;
+    }
+
+    #seekBar {
+        height: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .player-container {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .glowing-board {
+        height: 220px;
+        font-size: 14px;
+        max-width: 100%;
+    }
+
+    #textContainer {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .play-btn {
+        font-size: 20px;
+        padding: 8px 12px;
+    }
+
+    .fullscreen-btn {
+        font-size: 14px;
+        padding: 5px 8px;
+    }
+
+    .speed-container {
+        top: 3px;
+        right: 3px;
+    }
+
+    .speed-dropdown {
+        width: 50px;
+        font-size: 10px;
+    }
+
+    #seekBar {
+        height: 3px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .moon {
+        top: 8%;
+        left: 75%;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .moon {
+        top: 10%;
+        left: 70%;
+        width: 40px;
+        height: 40px;
+    }
+}
+
